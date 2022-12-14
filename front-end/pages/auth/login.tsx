@@ -21,11 +21,11 @@ export default function Login() {
         
         if(response.status == 200) {
             const data = await response.json();
-            setCookie('token', data['token'], {sameSite: true});
+            setCookie('token', data['token'], {sameSite: true, maxAge: 60 * 6 * 24});
             console.log('token salvo!!');
             router.push('/admin');
         } else {
-            console.log('erro status: ' + response.status);
+            alert('erro status: ' + response.status);
         }
 
     }

@@ -1,8 +1,5 @@
 import UserModel from "../model/UserModel";
-
-async function error500(req, res) {
-    res.status(500).send({error: true});
-}
+import error500 from "./error500";
 
 async function add(req, res) {
     const user = req.body;    

@@ -1,6 +1,10 @@
 import { Box, Button, Divider, HStack, Image, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon, TriangleDownIcon } from '@chakra-ui/icons';
 import { useRouter } from "next/router";
+import { MenuInterface } from "./menu.types";
+import { useEffect, useState } from "react";
+import { getAllMenus } from "../helpers/menus";
+import Link from "next/link";
 
 
 const fakeMenus = [
@@ -41,16 +45,28 @@ const fakeMenus = [
 export default function Navbar() {
 
     const router = useRouter();
+    const [menus, setMenus] = useState<MenuInterface[]>([]);
+
+    async function loadMenus() {
+        setMenus(await getAllMenus());
+        console.log(menus);
+    }
+
+    useEffect(()=>{loadMenus()}, []);
 
     function menuBuilder() {
-        return fakeMenus.map(function(menu, i){
+        return menus.map(function(menu, i){
             return (
                 <Menu key={i}>
                     <MenuButton fontSize={'md'} fontWeight={'normal'} as={Button} rightIcon={<ChevronDownIcon />}>
                         {menu.title}
                     </MenuButton>
                     <MenuList>
-                        {menu.submenus.map((smenu, j) => <MenuItem key={j}>{smenu.title}</MenuItem>)}
+                        {menu.SubMenus.map((smenu, j) => (
+                            <MenuItem key={j}>
+                                <Link href={`/${menu.slug}/${smenu.slug}`}>{smenu.title}</Link>
+                            </MenuItem>)
+                        )}
                     </MenuList>
                 </Menu>
             );
@@ -63,10 +79,12 @@ export default function Navbar() {
         <>
             <HStack w={'full'}>
                 <Box w={'sm'}>
-                    <Image w={'48'} h={'20'} src={'https://dcc-ufrr.vercel.app/images/logos/logo-dcc-01.png'} />            
+                    <Link href={'/'}>
+                        <Image w={'48'} h={'20'} src={'https://dcc-ufrr.vercel.app/images/logos/logo-dcc-01.png'} />            
+                    </Link>
                 </Box>
                 <HStack w={'full'} justifyContent={'center'} >{menuBuilder()}</HStack>
-                <Button colorScheme={'blue'} onClick={goToAdmin}>Admin</Button>
+                <Button bg={'blue.700'} color={'white'} onClick={goToAdmin}>Admin</Button>
             </HStack>
             <Box pt={2} mb={'10'} w={'lg'} textAlign={'center'} color={"gray.400"}>
                 {/* <TriangleDownIcon /> */}

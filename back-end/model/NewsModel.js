@@ -8,6 +8,10 @@ const NewsModel = sequelize.define('News', {
     content: {
         type: DataTypes.STRING,
     },
+    slug: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 });
 
 export default NewsModel;

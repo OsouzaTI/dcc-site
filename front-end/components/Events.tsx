@@ -1,18 +1,8 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Button, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react"
 import { useState } from "react";
+import formatedTimestamp from '../helpers/dateFormat';
 
-const formatedTimestamp = (d : Date)=> {
-    const date = d.toISOString().split('T')[0].split('-').reverse().join('/');
-    let time = d.toTimeString().split(' ')[0];
-
-    // removendo segundos
-    let timeNoSec = time.split(':');
-    timeNoSec.pop();
-    time = timeNoSec.join(':');
-
-    return `${date} ${time}`
-}
 
 const fakeEvents = [
     {
